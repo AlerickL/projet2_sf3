@@ -1,0 +1,40 @@
+@startuml VolailleAtrabilaire
+
+class Simulation {}
+
+class Parametre <T> {
+    + <<property>> valeur : T
+    + <<property>> minimum : T | None {readonly}
+    + <<property>> maximum : T | None {readonly}
+    + <<property>> valeur_initiale : T {readonly}
+    + Parametre(valeur_initiale : T, maximum : T | None, minimum : T | None)
+}
+
+class Structure {
+    + <<property>> points : Points {readonly}
+    + <<property>> liens : Liens {readonly}
+    + Structure(points : np.ndarray[2d, float], liens : np.ndarray[2d, int], m : float)
+    + {static} charger(chemin : str) : Structure
+    - appliquer_liens(dt : float)
+    + step(dt : float)
+}
+
+class Points {
+    + <<property>> positions : np.ndarray[2d, float] {readonly}
+    + <<property>> vitesses : np.ndarray[2d, float] {readonly}
+    + <<property>> forces : np.ndarray[2d, float] {readonly}
+    + <<property>> m : Parametre[float] {readonly}
+    + Points(pos : np.ndarray[...], m : float)
+    + step(dt : float) : None
+}
+
+class Liens {
+    + <<property>> liaisons : np.ndarray[2d, int] {readonly}
+    + <<property>> data : np.ndarray[?, float] | None
+    + Liens(liaisons : np.ndarray[2d, int])
+}
+
+Structure *-- Points
+Structure *-- Liens
+
+@enduml
